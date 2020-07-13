@@ -1,0 +1,27 @@
+.sidebar li {
+    text-align: left;    
+    border-style: solid;
+    border-width: 1.5px;
+    border-left-width: 0;
+    border-right-width: 0;
+    padding-left: 1em;
+    border-color: white;
+    padding-top: 1em;
+}
+
+.sidebar li a {
+    color: white;
+}
+
+#home {
+    border-top-width: 0;
+    border-bottom-width: 0;
+}
+
+#atleticas, #auxilio-socioeconomico, #calouro, #caredes, #concessao-ingles, #divulgacao, #EngNet, #materias, #Oportunidade-de-estagio, #sigaa {
+    border-bottom-width: 0;
+}
+
+.sidebar{
+    justify-content: space-between;
+}
