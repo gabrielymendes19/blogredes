@@ -10,7 +10,7 @@
               echo
                 '<div class="alert alert-info">
                       <button type="button" class="close" data-dismiss="alert">×</button>
-                      <strong>Olá, ' . $nomeLogado . '!</strong> Seja Bem vindo ao <strong>WVA System</strong> !
+                      <strong>Olá, ' . $nomeLogado . '!</strong> Seja Bem vindo ao <strong>Blog de Redes</strong> !
                </div>';
             }
           }
@@ -101,16 +101,16 @@
             </thead>
             <tbody>
               <?PHP
-              include("functions/limita-texto.php");
-              $select = "SELECT * from tb_postagens ORDER BY id DESC LIMIT 5";
-              $contagem = 1;
+                include("functions/limita-texto.php");
+                $select = "SELECT * from tb_postagens ORDER BY id DESC LIMIT 5";
+                $contagem = 1;
 
-              try {
-                $result = $conexao->prepare($select);
-                $result->execute();
-                $contar = $result->rowCount();
-                if ($contar > 0) {
-                  while ($mostra = $result->FETCH(PDO::FETCH_OBJ)) {
+                try {
+                  $result = $conexao->prepare($select);
+                  $result->execute();
+                  $contar = $result->rowCount();
+                  if ($contar > 0) {
+                    while ($mostra = $result->FETCH(PDO::FETCH_OBJ)) {
               ?>
                     <tr>
                       <td><?php echo $contagem++; ?></td>
@@ -122,16 +122,18 @@
                         <a href="home.php?delete=<?php echo $mostra->id; ?>" onClick="return confirm('Deseja realmente excluir o post?')"></a></td>
                     </tr>
               <?php
+                    }
                   }
-                } else {
-                  echo '<div class="alert alert-danger">
-                      <button type="button" class="close" data-dismiss="alert">×</button>
-                      <strong>Aviso!</strong> Não há post cadastrado em nosso banco de dados.
-                </div>';
+                  else {
+                    echo '<div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <strong>Aviso!</strong> Não há post cadastrado em nosso banco de dados.
+                  </div>';
+                  }
                 }
-              } catch (PDOException $e) {
-                echo $e;
-              }
+                catch (PDOException $e) {
+                  echo $e;
+                }
               ?>
 
 
