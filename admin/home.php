@@ -6,21 +6,30 @@
 
 
 <?php
-	if(isset($_GET['acao'])){
+	if(isset($_GET['acao'])) {
 		$acao = $_GET['acao'];	
 		
-		if($acao=='welcome'){include("pages/inicio.php");}	
+		if($acao=='welcome') {
+			include("pages/inicio.php");
+		}	
 		
 		// cadastro
-		if($acao=='cad-postagem'){include("pages/cad-postagem.php");}	
+		if($acao=='cad-postagem'){
+			include("pages/cad-postagem.php");
+		}	
 		
 		// exibicao
-		if($acao=='ver-postagens'){include("pages/ver-postagens.php");}
+		if($acao=='ver-postagens'){
+			include("pages/ver-postagens.php");
+		}
 		
 		// edicao
-		if($acao=='editar-postagem'){include("pages/edt-postagem.php");}
+		if($acao=='editar-postagem'){
+			include("pages/edt-postagem.php");
+		}
 		
-	}else{
+	}
+	else{
 		include("pages/inicio.php");
 	}
 
