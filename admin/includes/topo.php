@@ -33,14 +33,13 @@
       <ul>
         <li <?php if($acao =="welcome" || ($acao =="home")){echo 'class="active"';}?>><a href="home.php"><i></i><span>Página inicial</span></a></li>
         
-        <?php if($nivelLogado ==1){?>
+        
         <li class="<?php if($acao =="ver-postagens" || ($acao =="cad-postagem")){echo "active";}?> dropdown"><a href="javascript:;" data-toggle="dropdown"><span>Postagens</span><b></b></a>
           <ul>
             <li><a href="home.php?acao=ver-postagens">Visualizar</a></li>
             <li><a href="home.php?acao=cad-postagem">Cadastrar</a></li>
           </ul>
         </li>
-        <?php }?>
         <li><a href="javascript:;" data-toggle="dropdown"><span>Usuários</span><b></b></a>
           <ul>
             <li><a href="#">Visualizar</a></li>

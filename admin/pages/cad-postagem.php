@@ -15,6 +15,7 @@
                     if(isset($_POST['cadastrar'])) {
                         $titulo = trim(strip_tags($_POST['titulo']));
                         $data = trim(strip_tags($_POST['data']));
+                        $categoria = trim(strip_tags($_POST['categoria']));
                         $exibir = trim(strip_tags($_POST['exibir']));
                         $descricao = trim(strip_tags($_POST['descricao']));
                         //INFO IMAGEM
@@ -68,12 +69,13 @@
                                 else{
                                     
                                     if(move_uploaded_file($tmp, $folder.'/'.$novoNome)){
-                                        //$msg[] = "<b>$name :</b> Upload Realizado com Sucesso!";
-                                        $insert = "INSERT into tb_postagens (titulo, data, imagem, exibir, descricao) VALUES (:titulo, :data, :imagem, :exibir, :descricao)";
+                                        $msg[] = "<b>$name :</b> Upload Realizado com Sucesso!";
+                                        $insert = "INSERT into tb_postagens (titulo, data, categoria, imagem, exibir, descricao) VALUES (:titulo, :data, :categoria, :imagem, :exibir, :descricao)";
                                         try {
                                             $result = $conexao->prepare($insert);
                                             $result->bindParam(':titulo', $titulo, PDO::PARAM_STR);
                                             $result->bindParam(':data', $data, PDO::PARAM_STR);
+                                            $result->bindParam(':categoria', $categoria, PDO::PARAM_STR);
                                             $result->bindParam(':imagem', $novoNome, PDO::PARAM_STR);
                                             $result->bindParam(':exibir', $exibir, PDO::PARAM_STR);
                                             $result->bindParam(':descricao', $descricao, PDO::PARAM_STR);
@@ -122,6 +124,24 @@
                             <div>
                                 <input type="text" id="date" name="data" value="">
                             </div>				
+                        </div> 
+                        <div>
+                            <label>Categoria</label>
+                            <div>
+                                <select id="categoria" name="categoria">
+                                    <option >Selecione a categoria da sua postagem</option>
+                                    <option>Antenada / Maquinada</option>
+                                    <option>Auxílio Socioeconômico</option>
+                                    <option>Calouro</option>
+                                    <option>CAREDES</option>
+                                    <option>Concessão de Créditos em Língua Estrangeira</option>
+                                    <option>Divulgação de Materiais de Estudo, de Serviços e de Produtos</option>
+                                    <option>EngNet</option>
+                                    <option>Matérias</option>
+                                    <option>Oportunidades de estágio</option>
+                                    <option>SIGAA</option>
+                                </select>
+                            </div>
                         </div> 
                         <div>											
                             <label>Imagem</label>

@@ -14,6 +14,7 @@
                                         <th> Nº</th>
                                         <th> Título da Postagem </th>
                                         <th> Data</th>
+                                        <th>Categoria</th>
                                         <th>Imagem</th>
                                         <th>Exibição</th>
                                         <th> Resumo</th>
@@ -21,9 +22,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?PHP
+                                    <?php
                                         include("functions/limita-texto.php");
-                                        $select = "SELECT * from tb_postagens ORDER BY id DESC";
+                                        if (empty($_GET['pg'])) {
+
+                                        }
+                                        else {
+                                            $pg = $_GET['pg'];
+                                        }
+                                        if (isset($pg)) {
+                                            $pg = $_GET['pg'];
+                                        }
+                                        else {
+                                            $pg = 1;
+                                        }
+                                        $quantidade = 1;
+                                        $inicio = ($pg*$quantidade) - $quantidade;
+                                        $select = "SELECT * from tb_postagens ORDER BY id DESC LIMIT $inicio, $quantidade";
                                         $contagem = 1;
 
                                         try {
@@ -37,6 +52,7 @@
                                                     <td><?php echo $contagem++; ?></td>
                                                     <td> <?php echo $mostra->titulo; ?> </td>
                                                     <td> <?php echo $mostra->data; ?> </td>
+                                                    <td> <?php echo $mostra->categoria; ?> </td>
                                                     <td><img src="../upload/postagens/<?php echo $mostra->imagem; ?>" width="50"></td>
                                                     <td><?php echo $mostra->exibir; ?></td>
                                                     <td> <?php echo limitarTexto($mostra->descricao, $limite = 200) ?> </td>
@@ -49,7 +65,7 @@
                                             else {
                                                 echo '<div class="alert alert-danger">
                                                     <button type="button" class="close" data-dismiss="alert">×</button>
-                                                    <strong>Aviso!</strong> Não há post cadastrado em nosso banco de dados.
+                                                    <strong>Aviso!</strong> Não há post cadastrado em nosso banco de dados ou a página não existe.
                                             </div>';
                                             }
                                             }
@@ -60,6 +76,57 @@
                                 </tbody>
                             </table>
                         </div>
+                        <!--inicio botoes paginacao-->
+                        <?php
+                            $sql = "SELECT * from tb_postagens";
+                            try {
+                                $result = $conexao->prepare($sql);
+                                $result->execute();
+                                $totalRegistros = $result->rowCount();
+                            }
+                            catch (PDOException $e) {
+                                echo $e;
+                            }
+                            if ($totalRegistros <= $quantidade) {
+                                
+                            }
+                            else {
+                                $paginas = ceil($totalRegistros/$quantidade);
+                                $links = 5;
+                                if (isset($i)) {
+
+                                }
+                                else {
+                                    $i = '1';
+                                }
+                        ?>
+
+                        <div class="paginas">
+                                <a href="home.php?acao=ver-postagens&pg=1">Primeira Página</a>
+                                <?php
+                                    if (isset($_GET['pg'])) {
+                                        $num_pg = $_GET['pg'];
+                                    }
+                                    for ($i = $pg - $links; $i <= $pg - 1 ; $i++) {
+                                        if ($i <= 0) {
+
+                                        }
+                                        else {
+                                ?>
+                                <a href="home.php?acao=ver-postagens&pg=<?php echo $i; ?>" class="ativo"><?php echo $i; ?></a>
+                                <?php
+                                        }
+                                    }
+                                ?>
+                                <a href="#" class="ativo"><?php echo $pg ?></a>
+
+                        </div> <!--paginas-->
+                        
+                        <?php
+                            }
+
+                        ?>
+                        <!--fim botoes paginacao-->
                     </div>
                 </div> <!-- span 12-->
             </div>

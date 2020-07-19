@@ -95,6 +95,7 @@
                 <th> Nº</th>
                 <th> Título da Postagem </th>
                 <th> DATA</th>
+                <th>Categoria</th>
                 <th> Resumo</th>
                 <th> </th>
               </tr>
@@ -116,6 +117,7 @@
                       <td><?php echo $contagem++; ?></td>
                       <td> <?php echo $mostra->titulo; ?> </td>
                       <td> <?php echo $mostra->data; ?> </td>
+                      <td> <?php echo $mostra->categoria; ?> </td>
                       <td> <?php echo limitarTexto($mostra->descricao, $limite = 200) ?> </td>
                       <td><a href="home.php?acao=editar-postagem&id=<?php echo $mostra->id; ?>" ></a>
 
