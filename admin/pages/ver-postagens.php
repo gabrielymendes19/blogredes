@@ -29,6 +29,9 @@
                                         }
                                         else {
                                             $pg = $_GET['pg'];
+                                            if (!is_numeric($pg)) {
+                                                echo '<script language="JavaScript">location.href="home.php?acao=ver-postagens";</script>';
+                                            }
                                         }
                                         if (isset($pg)) {
                                             $pg = $_GET['pg'];
@@ -55,9 +58,7 @@
                                                     <td> <?php echo $mostra->categoria; ?> </td>
                                                     <td><img src="../upload/postagens/<?php echo $mostra->imagem; ?>" width="50"></td>
                                                     <td><?php echo $mostra->exibir; ?></td>
-                                                    <td> <?php echo limitarTexto($mostra->descricao, $limite = 200) ?> </td>
-                                                    <td><a href="home.php?acao=editar-postagem&id=<?php echo $mostra->id; ?>" ></a>
-                                                        <a href="home.php?delete=<?php echo $mostra->id; ?>" onClick="return confirm('Deseja realmente excluir o post?')"></a></td>
+                                                    <td> <?php echo limitarTexto($mostra->descricao, $limite = 200); ?> </td>
                                                 </tr>
                                         <?php
                                                 }
@@ -77,6 +78,20 @@
                             </table>
                         </div>
                         <!--inicio botoes paginacao-->
+                        <style>
+                            <?php
+                                if(isset($_GET['pg'])) {
+                                    $num_pg = $_GET['pg'];
+                                }
+                                else {
+                                    $num_pg = 1;
+                                }
+                            ?>
+                            .paginas a.ativo<?php echo $num_pg; ?> {
+                                background: red;
+                                color: white;
+                            }
+                        </style>
                         <?php
                             $sql = "SELECT * from tb_postagens";
                             try {
@@ -92,6 +107,9 @@
                             }
                             else {
                                 $paginas = ceil($totalRegistros/$quantidade);
+                                if ($pg > $paginas) {
+                                    echo '<script language="JavaScript">location.href="home.php?acao=ver-postagens";</script>';
+                                }
                                 $links = 5;
                                 if (isset($i)) {
 
@@ -113,12 +131,30 @@
                                         }
                                         else {
                                 ?>
-                                <a href="home.php?acao=ver-postagens&pg=<?php echo $i; ?>" class="ativo"><?php echo $i; ?></a>
+                                <a href="home.php?acao=ver-postagens&pg=<?php echo $i; ?>" class="ativo<?php echo $i; ?>"><?php echo $i; ?></a>
                                 <?php
                                         }
                                     }
                                 ?>
-                                <a href="#" class="ativo"><?php echo $pg ?></a>
+                                <a href="home.php?acao=ver-postagens&pg=<?php echo $pg; ?>" class="ativo<?php echo $i; ?>"><?php echo $pg; ?></a>
+
+                                <?php
+                                    for($i = $pg + 1 ; $i <= $pg + $links ; $i++) {
+                                        if($i > $paginas) {
+
+                                        }
+                                        else {
+                                ?>
+
+                                <a href="home.php?acao=ver-postagens&pg=<?php echo $i; ?>" class="ativo<?php echo $i; ?>"><?php echo $i; ?></a>
+
+                                <?php            
+
+                                        }
+                                    }
+                                ?>
+
+                                <a href="home.php?acao=ver-postagens&pg=<?php echo $paginas; ?>">Última Página</a>  
 
                         </div> <!--paginas-->
                         
@@ -133,52 +169,3 @@
         </div>
     </div>
 </div>
-<?php
-    //excluir
-    if (isset($_GET['delete'])) {
-        $id_delete = $_GET['delete'];
-
-        // seleciona a imagem
-        $seleciona = "SELECT * from tb_postagens WHERE id= :id_delete";
-        try {
-            $result = $conexao->prepare($seleciona);
-            $result->bindParam('id_delete', $id_delete, PDO::PARAM_INT);
-            $result->execute();
-            $contar = $result->rowCount();
-            if ($contar > 0) {
-                $loop = $result->fetchAll();
-                foreach ($loop as $exibir) {
-                }
-
-                $fotoDeleta = $exibir['imagem'];
-                $arquivo = "../upload/postagens/" . $fotoDeleta;
-                unlink($arquivo);
-
-
-                // exclui o registo
-                $seleciona = "DELETE from tb_postagens WHERE id=:id_delete";
-                try {
-                    $result = $conexao->prepare($seleciona);
-                    $result->bindParam('id_delete', $id_delete, PDO::PARAM_INT);
-                    $result->execute();
-                    $contar = $result->rowCount();
-                    if ($contar > 0) {
-                        echo '<div class="alert alert-success">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <strong>Sucesso!</strong> O post foi excluído.
-        </div>';
-                    } else {
-                        echo '<div class="alert alert-danger">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <strong>Erro!</strong> Não foi possível excluir o post.
-        </div>';
-                    }
-                } catch (PDOException $erro) {
-                    echo $erro;
-                }
-            }
-        } catch (PDOException $erro) {
-            echo $erro;
-        }
-    }
-?>

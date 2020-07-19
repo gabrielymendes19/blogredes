@@ -22,12 +22,6 @@
 		if($acao=='ver-postagens'){
 			include("pages/ver-postagens.php");
 		}
-		
-		// edicao
-		if($acao=='editar-postagem'){
-			include("pages/edt-postagem.php");
-		}
-		
 	}
 	else{
 		include("pages/inicio.php");
