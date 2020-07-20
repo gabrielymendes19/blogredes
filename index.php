@@ -151,7 +151,18 @@
 
           <!-- Begin Page Content -->
           <div class="divcenter">
+            <?php
+              if (!isset($_GET['categoria'])) {
+            ?>
             <h1>Todas as postagens</h1>
+            <?php
+              }
+              else {
+            ?>
+            <h1><?php echo $_GET['categoria'];?></h1>
+            <?php
+              }
+            ?>
             <ul style="list-style-type: none;" class="boxposts">
 
             <!-- mostrando todas as postagens do banco de dados -->

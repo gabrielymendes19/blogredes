@@ -28,7 +28,7 @@
                             $contar = $result->rowCount();
 
                             if ($contar > 0) {
-                                echo '<strong>Sucesso!</strong>A postagem foi cadastrada no banco de dados. Voltando para área administrativa';
+                                echo '<strong>Sucesso!</strong>A postagem foi cadastrada no banco de dados. Voltando para área administrativa.';
                                 header("Refresh: 2, home.php?acao=welcome");
                             }
                             else {
