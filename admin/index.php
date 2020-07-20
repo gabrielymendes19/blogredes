@@ -11,7 +11,7 @@
   
 <head>
     <meta charset="utf-8">
-    <title>Login - Blog de Redes</title>
+    <title>Tela de Login</title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes"> 
@@ -28,18 +28,13 @@
 					<span></span>
 					<span></span>
 				</a>
-				<a href="index.php">
-					Login - Blog de Redes			
-				</a>		
-				<div>
-					<ul>
-						<li class="">						
-							<a href="../" class="">
-								Acessar o site
-							</a>
-						</li>
-					</ul>
-				</div>
+				<h1>
+					Tela de Login			
+				</h1>		
+				<p>Para cadastrar postagens no blog, é necessário fazer login. Caso não tenha uma conta, faça o cadastro.</p>
+				<p>
+					Para visualizar as postagens diretamente no blog, <a href="../">clique aqui.</a>
+				</p>
 			</div>
 		</div> 
 	</div>
@@ -49,10 +44,7 @@
 		if(!isset($_POST['logar'])){
 			$acao = $_GET['acao'];
 			if($acao=='negado'){
-				echo '<div class="alert alert-danger">
-							<button type="button" class="close" data-dismiss="alert">×</button>
-							<strong>Erro ao acessar!</strong> Você precisa estar logado.
-						</div>';	
+				echo '<strong>Acesso negado!</strong> Você precisa estar logado.';	
 			}
 		}
 	}
@@ -66,7 +58,7 @@
 		$senha = trim(strip_tags($_POST['senha'])); //entre aspas simples eh o atributo name do codigo html
 
 		//selecionar banco de dados
-		$select = "SELECT * from login WHERE BINARY usuario=:usuario AND BINARY senha=:senha"; //BINARY serve para diferenciar maiusculas de minusculas
+		$select = "SELECT * from usuarios WHERE BINARY usuario=:usuario AND BINARY senha=:senha"; //BINARY serve para diferenciar maiusculas de minusculas
 		try {
 			$result = $conexao->prepare($select);
 			$result->bindParam(':usuario', $usuario, PDO::PARAM_STR);
@@ -79,17 +71,11 @@
 				$senha= $_POST['senha'];
 				$_SESSION['usuarioblog'] = $usuario; 
 				$_SESSION['senhablog'] = $senha;// o SESSION armazena o usuario e a senha digitada em 'usuarioblog' e 'senhablog', respectivamente
-				echo '<div class="alert alert-success">
-					<button type="button" class="close" data-dismiss="alert">×</button>
-					<strong>Logado com Sucesso!</strong> Redirecionando para a página inicial.
-				</div>';
+				echo '<strong>Logado com Sucesso!</strong> Redirecionando para a página inicial.';
 				header("Refresh: 2, home.php?acao=welcome");
 			}
 			else {
-				echo '<div class="alert alert-danger">
-					<button type="button" class="close" data-dismiss="alert">×</button>
-					<strong>Erro ao logar!</strong> Os dados estão incorretos.
-				</div>';
+				echo '<strong>Erro ao logar!</strong> Os dados inseridos estão incorretos.';
 			}
 		}
 		catch (PDOException $e) {
@@ -102,7 +88,7 @@
 	<div>
 		<form action="#" method="post" enctype="multipart/form-data">
 		
-			<h1>Faça seu Login</h1>		
+			<h2>Faça seu Login</h2>		
 			
 			<div>
 				
@@ -126,6 +112,7 @@
 				
 			</div> 
 		</form>
+		<p>Ainda não possui conta? <a href="index.php?acao=cad-usuario">Faça o cadastro aqui.</a></p>
 		
 	</div> 
 	

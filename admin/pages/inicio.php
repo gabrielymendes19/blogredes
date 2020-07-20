@@ -8,10 +8,7 @@
             $acao = $_GET['acao'];
             if ($acao == 'welcome') {
               echo
-                '<div class="alert alert-info">
-                      <button type="button" class="close" data-dismiss="alert">×</button>
-                      <strong>Olá, ' . $nomeLogado . '!</strong> Seja Bem vindo ao <strong>Blog de Redes</strong> !
-               </div>';
+                'Olá, seja bem vindo ao <strong>Blog de Redes</strong>!';
             }
           }
           ?>
@@ -21,7 +18,7 @@
         <div>
           <div id="target-1">
             <div>
-              <h1>Blog de Redes - Apresentação</h1>
+              <h2>Apresentação do Blog de Redes</h2>
               <p>O <strong>Blog de Redes</strong> tem como objetivo gerenciar postagens feitas por alunos de redes. <br>
             </div> 
           </div> 
@@ -46,7 +43,7 @@
             <tbody>
               <?php
                 include("functions/limita-texto.php");
-                $select = "SELECT * from tb_postagens ORDER BY id DESC LIMIT 5";
+                $select = "SELECT * from posts ORDER BY id DESC LIMIT 5";
                 $contagem = 1;
 
                 try {
@@ -61,16 +58,13 @@
                       <td> <?php echo $mostra->titulo; ?> </td>
                       <td> <?php echo $mostra->data; ?> </td>
                       <td> <?php echo $mostra->categoria; ?> </td>
-                      <td> <?php echo limitarTexto($mostra->descricao, $limite = 200); ?> </td>
+                      <td> <?php echo limitarTexto($mostra->conteudo, $limite = 200); ?> </td>
                     </tr>
               <?php
                     }
                   }
                   else {
-                    echo '<div class="alert alert-danger">
-                        <button type="button" class="close" data-dismiss="alert">×</button>
-                        <strong>Aviso!</strong> Não há post cadastrado em nosso banco de dados.
-                  </div>';
+                    echo '<strong>Aviso!</strong> Não há post cadastrado em nosso banco de dados.';
                   }
                 }
                 catch (PDOException $e) {

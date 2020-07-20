@@ -2,7 +2,7 @@
     <div>
         <div>
             <div>
-                <div class="span 12">
+                <div>
                     <div>
                         <div>
                             <h3>Visualizar Posts</h3>
@@ -16,7 +16,6 @@
                                         <th> Data</th>
                                         <th>Categoria</th>
                                         <th>Imagem</th>
-                                        <th>Exibição</th>
                                         <th> Resumo</th>
                                         <th> </th>
                                     </tr>
@@ -41,7 +40,7 @@
                                         }
                                         $quantidade = 1;
                                         $inicio = ($pg*$quantidade) - $quantidade;
-                                        $select = "SELECT * from tb_postagens ORDER BY id DESC LIMIT $inicio, $quantidade";
+                                        $select = "SELECT * from posts ORDER BY id DESC LIMIT $inicio, $quantidade";
                                         $contagem = 1;
 
                                         try {
@@ -56,18 +55,14 @@
                                                     <td> <?php echo $mostra->titulo; ?> </td>
                                                     <td> <?php echo $mostra->data; ?> </td>
                                                     <td> <?php echo $mostra->categoria; ?> </td>
-                                                    <td><img src="../upload/postagens/<?php echo $mostra->imagem; ?>" width="50"></td>
-                                                    <td><?php echo $mostra->exibir; ?></td>
-                                                    <td> <?php echo limitarTexto($mostra->descricao, $limite = 200); ?> </td>
+                                                    <td><img src="../imagens/<?php echo $mostra->categoria; ?>/<?php echo $mostra->categoria; ?>.png" width="50"></td>
+                                                    <td> <?php echo limitarTexto($mostra->conteudo, $limite = 200); ?> </td>
                                                 </tr>
                                         <?php
                                                 }
                                             }
                                             else {
-                                                echo '<div class="alert alert-danger">
-                                                    <button type="button" class="close" data-dismiss="alert">×</button>
-                                                    <strong>Aviso!</strong> Não há post cadastrado em nosso banco de dados ou a página não existe.
-                                            </div>';
+                                                echo '<strong>Aviso!</strong> Não há post cadastrado em nosso banco de dados ou a página não existe.';
                                             }
                                             }
                                             catch (PDOException $e) {
@@ -93,7 +88,7 @@
                             }
                         </style>
                         <?php
-                            $sql = "SELECT * from tb_postagens";
+                            $sql = "SELECT * from posts";
                             try {
                                 $result = $conexao->prepare($sql);
                                 $result->execute();
@@ -164,7 +159,7 @@
                         ?>
                         <!--fim botoes paginacao-->
                     </div>
-                </div> <!-- span 12-->
+                </div>
             </div>
         </div>
     </div>

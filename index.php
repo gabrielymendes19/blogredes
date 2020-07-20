@@ -1,3 +1,8 @@
+<?php
+  require_once("admin/conexao/conecta.php");
+  require_once("admin/functions/limita-texto.php");
+?>
+
 <!DOCTYPE html>
 <html lang="pt-4">
 
@@ -6,7 +11,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Blog de Redes</title>
+    <title>Página inicial</title>
 
     <!-- Custom fonts for this template-->
     <link href="public/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -22,19 +27,19 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-      <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark">
-        <li id="home"><a href="index.html">Página inicial</a></li>
-        <li id="atleticas"><a href="atleticas.html">Antenada/Maquinada</a></li>
-        <li id="auxilio-socioeconomico"><a href="auxilio.html">Auxílio socioeconômico</a></li>
-        <li id="calouro"><a href="calouro.html">Calouro</a></li>
-        <li id="caredes"><a href="caredes.html">CAREDES</a></li>
-        <li id="concessao-ingles"><a href="concessao.html">Concessão de créditos em língua estrangeira</a></li>
-        <li id="divulgacao"><a href="divulgacao.html">Divulgação de materiais de estudo, de serviços e de produtos</a></li>
-        <li id="EngNet"><a href="engnet.html">EngNet</a></li>
-        <li id="materias"><a href="materias.html">Matérias</a></li>
-        <li id="Oportunidade-de-estagio"><a href="oportunidade.html">Oportunidade de estágio</a></li>
-        <li id="sigaa"><a href="sigaa.html">SIGAA</a></li>
-      </ul>
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark">
+      <li id="home"><a href="index.php">Página inicial</a></li>
+      <li id="atleticas"><a href="?categoria=Antenada e Maquinada">Antenada e Maquinada</a></li>
+      <li id="auxilio-socioeconomico"><a href="?categoria=Auxílio socioeconômico">Auxílio socioeconômico</a></li>
+      <li id="calouro"><a href="?categoria=Calouro">Calouro</a></li>
+      <li id="caredes"><a href="?categoria=CAREDES">CAREDES</a></li>
+      <li id="concessao-ingles"><a href="?categoria=Concessão de créditos em língua estrangeira">Concessão de créditos em língua estrangeira</a></li>
+      <li id="divulgacao"><a href="?categoria=Divulgação de materiais de estudo, de serviços e de produtos">Divulgação de materiais de estudo, de serviços e de produtos</a></li>
+      <li id="EngNet"><a href="?categoria=EngNet">EngNet</a></li>
+      <li id="materias"><a href="?categoria=Matérias">Matérias</a></li>
+      <li id="Oportunidade-de-estagio"><a href="?categoria=Oportunidades de estágio">Oportunidades de estágio</a></li>
+      <li id="sigaa"><a href="?categoria=SIGAA">SIGAA</a></li>
+    </ul>
       
 
       <div id="content-wrapper" class="d-flex flex-column">
@@ -145,10 +150,89 @@
           <!-- End of Topbar -->
 
           <!-- Begin Page Content -->
-          <div class="container-fluid">
-            
+          <div class="divcenter">
+            <h1>Todas as postagens</h1>
+            <ul style="list-style-type: none;" class="boxposts">
+
+            <!-- mostrando todas as postagens do banco de dados -->
+            <?php
+              if (!isset($_GET['categoria'])) {
+                $sql = "SELECT * from posts ORDER BY id DESC";
+                try {
+                  $resultado = $conexao->prepare($sql);
+                  $resultado->execute();
+                  $contar = $resultado->rowCount();
+                  if ($contar > 0) {
+                    while ($exibe = $resultado->fetch(PDO::FETCH_OBJ)) {
+            ?>
+              <li>
+                <span class="thumb">
+                  <img src="imagens/<?php echo $exibe->categoria; ?>/<?php echo $exibe->categoria; ?>.png" alt="<?php echo $exibe->titulo; ?>" title="<?php echo $exibe->titulo; ?>" width="166" height="166">
+                </span>
+                <span class="content">
+                  <h2><?php echo $exibe->titulo; ?></h2>
+                  <p><?php echo limitarTexto($exibe->conteudo, $limite = 380); ?></p>
+                  <div class="footer_post">
+                    <a href="#">Ler postagem completa</a>
+                    <span class="datapost">Data de publicação: <strong><?php echo $exibe->data; ?></strong></span>
+                  </div>
+                </span>
+              </li>
+
+              <?php
+                }
+                    }
+                    else {
+                    echo '<li>Não existe postagem cadastrada no sistema.</li>';
+                    }
+                }
+                catch (PDOException $e) {
+                  echo $e; 
+                }
+              }
+              ?>
+              
+              <!-- filtrando postagens por categoria -->
+              <?php
+                if (isset($_GET['categoria'])) {
+                  $pega_categoria = $_GET['categoria'];
+                  $sql = "SELECT * from posts WHERE categoria='$pega_categoria' ORDER BY id DESC";
+                  try {
+                    $resultado = $conexao->prepare($sql);
+                    $resultado->execute();
+                    $contar = $resultado->rowCount();
+                    if ($contar > 0) {
+                      while ($exibe = $resultado->fetch(PDO::FETCH_OBJ)) {
+              ?>
+                <li>
+                  <span class="thumb">
+                    <img src="imagens/<?php echo $exibe->categoria; ?>/<?php echo $exibe->categoria; ?>.png" alt="<?php echo $exibe->titulo; ?>" title="<?php echo $exibe->titulo; ?>" width="166" height="166">
+                  </span>
+                  <span class="content">
+                    <h2><?php echo $exibe->titulo; ?></h2>
+                    <p><?php echo limitarTexto($exibe->conteudo, $limite = 380); ?></p>
+                    <div class="footer_post">
+                      <a href="#">Ler postagem completa</a>
+                      <span class="datapost">Data de publicação: <strong><?php echo $exibe->data; ?></strong></span>
+                    </div>
+                  </span>
+                </li>
+
+                <?php
+                  }
+                      }
+                      else {
+                      echo '<li>Não existe postagem cadastrada no sistema.</li>';
+                      }
+                  }
+                  catch (PDOException $e) {
+                    echo $e; 
+                  }
+                }
+                ?>
+            </ul>
           </div>
-          <!-- /.container-fluid -->
+          <!-- /.divcenter -->
 
         </div>
         <!-- End of Main Content -->
